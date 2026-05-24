@@ -23,7 +23,7 @@ jobs:
       # 3. Install dependencies
       - name: Install dependencies
         run: |
-          pip install boto3 awsglue
+          pip install boto3
       
       # 4. Configure AWS credentials
       - name: Configure AWS credentials
