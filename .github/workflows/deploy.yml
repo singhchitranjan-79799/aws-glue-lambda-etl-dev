@@ -36,7 +36,7 @@ jobs:
       # 5. Upload Glue code to S3
       - name: Upload Glue code to S3
         run: |
-          aws s3 cp glue_etl_code/glue.py s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_scripts/glue.py
+          aws s3 cp glue_etl_code/glue.py s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_etl_code/glue.py
       
       # 6. Upload Lambda code to S3
       - name: Upload Lambda code to S3
@@ -44,7 +44,7 @@ jobs:
           cd lambda_file_check
           pip install -r requirements.txt -t .
           zip -r lambda_function.zip .
-          aws s3 cp lambda_function.zip s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/lambda_functions/lambda_function.zip
+          aws s3 cp lambda_function.zip s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/lambda_code/s3_file_format_check.zip
       
       # 7. Update Lambda function code
       - name: Update Lambda function
@@ -52,7 +52,7 @@ jobs:
           aws lambda update-function-code \
             --function-name s3_file_format_check \
             --s3-bucket ${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }} \
-            --s3-key lambda_functions/lambda_function.zip \
+            --s3-key lambda_code/s3_file_format_check.zip \
             --region ${{ secrets.AWS_REGION }}
       
       # 8. Optional: Update Glue Job if exists
@@ -61,12 +61,12 @@ jobs:
           aws glue update-job \
             --name incre_data_testing \
             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GlueServiceRole \
-            --command Name=glueetl,ScriptLocation=s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_scripts/glue.py \
+            --command Name=glueetl,ScriptLocation=s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_etl_code/glue.py \
             --region ${{ secrets.AWS_REGION }} || true
       
       # 9. Print deployment summary
       - name: Deployment Summary
         run: |
           echo "✅ Deployment Complete!"
-          echo "Glue Script: s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_scripts/glue.py"
-          echo "Lambda Package: s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/lambda_functions/lambda_function.zip"
+          echo "Glue Script: s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/glue_etl_code/glue.py"
+          echo "Lambda Package: s3://${{ secrets.AWS_GLUE_SCRIPTS_BUCKET }}/lambda_code/s3_file_format_check.zip"
