@@ -55,6 +55,7 @@ df_seed.coalesce(1) \
     .csv(source_path)
 
 print("Source data written")
+print("source data is not written to s3")
 
 # --------------------------------------------------
 # 3️⃣ READ SOURCE CSV
