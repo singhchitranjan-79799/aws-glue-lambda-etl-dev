@@ -1,9 +1,9 @@
-name: Deploy to AWS1
+name: Deploy to AWS
 
 on:
   push:
     branches:
-      - main
+      - aws-glue-lambda-etl1.0
 
 jobs:
   deploy:
