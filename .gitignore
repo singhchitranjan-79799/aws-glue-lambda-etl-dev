@@ -1,0 +1,30 @@
+# Ignore Python dependencies
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Ignore local AWS CLI config
+.aws/
+aws_credentials.txt
+
+# Ignore IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Lambda package
+lambda_file_check/lambda_function.zip
+lambda_file_check/package/
+
+# Ignore virtual environments
+venv/
+env/
+ENV/
